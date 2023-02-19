@@ -1,18 +1,17 @@
 import { Link } from "react-router-dom";
 
 export default function Header(){
-    return <nav className="flex flex-row justify-between items-center fixed top-0 w-full h-12 text-xs text-stone-700 bg-red-700">
-            <div className="flex flex-row justify-between items-center px-14 gap-3">
+    return <nav className="flex-row-between top-0 w-full h-52 text-xs px-52 text-gray-900 bg-transparent">
+            <div className="flex-row-between gap-3">
                 <ul className="flex flex-row justify-between gap-4 items-center">
-                    <li className="relative flex flex-col justify-center font-bold text-sm"><Link to='/'>Home</Link></li>
-                    <li className="relative flex flex-col justify-center font-bold text-sm"><Link to='music'>Music</Link></li>
-                    <li className="relative flex flex-col justify-center font-bold text-sm"><Link to='#'></Link></li>
+                    <li className="flex-col-center font-bold text-2xl"><Link to='/'>I'm in love with this.</Link></li>
                 </ul>
             </div>
-            <div className="flex flex-row justify-between items-center px-14 gap-3">
-                <ul className="flex flex-row justify-between gap-4 items-center">
-                    <li className="relative flex flex-col justify-center font-bold text-sm"><Link to='auth/signin'></Link></li>
-                    <li className="relative flex flex-col justify-center font-bold text-sm"><Link to='auth/signup'></Link></li>
+            <div className="flex-row-between px-14 gap-3">
+                <ul className="flex flex-row justify-between gap-4 items-center font-extralight text-xl">
+                    <li className="flex-col-center"><Link to='music'>music</Link></li>
+                    <li className="flex-col-center"><Link to='movie'>movie</Link></li>
+                    <li className="flex-col-center"><Link to='book'>book</Link></li>
                 </ul>
             </div>
          </nav>
