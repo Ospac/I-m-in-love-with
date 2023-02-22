@@ -19,8 +19,7 @@ export default function Topster({size} : TopsterProps){
         <div className="w-[525px] h-[525px] flex flex-col gap-1 ">
             {range(size).map((rowNum) => <div key={rowNum} className={`${columnsHeight[size]} w-full flex flex-row gap-1`}>
                     {range(size).map((colNum) => <CoverArt
-                         
-                        path={"https://e.snmc.io/i/1200/s/041458abc70133ca5dbfffae1b4446c2/3874272"}
+                        path={""}
                         key={colNum}
                         col={size}/>
                     )}
