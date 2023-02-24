@@ -1,4 +1,5 @@
-import { columnSizeType } from "../type"
+import { Draggable } from "react-beautiful-dnd"
+import { albumType, columnSizeType } from "../type"
 
 const columnsWidth : columnSizeType = {
     2: "w-[262px]",
@@ -20,9 +21,22 @@ const columnsHeight : columnSizeType = {
 }
 interface CoverArtProps{
     col : number,
-    path: string
+    album: albumType
+    index: number,
 }
-export default function CoverArt({col, path} : CoverArtProps){
-    if(path === "") return <div className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center shadow-sm hover:opacity-60 bg-white bg-opacity-10`}></div>
-    else return <div style={{backgroundImage: `url(${path})`}} className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center hover:opacity-60`}></div>
+export default function CoverArt({col, album, index} : CoverArtProps){
+    const {artist, name, image} = album;
+    const path = image[2]["#text"];
+    const id = artist+"-"+name;
+    // if(path === "" || path === undefined) return <div className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center shadow-sm hover:opacity-60 bg-white bg-opacity-10`}></div>
+    return <Draggable key={id} index={index} draggableId={id}>
+        {(provided) => (
+                <div 
+                ref={provided.innerRef}
+                {...provided.dragHandleProps}
+                {...provided.draggableProps}
+                style={{backgroundImage: `url(${path})`}} 
+                className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center hover:opacity-60`}/>)
+        }
+        </Draggable>
 }

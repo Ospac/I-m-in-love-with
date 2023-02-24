@@ -6,6 +6,10 @@ import { HiPlus, HiMinus, HiMagnifyingGlass } from "react-icons/hi2";
 import { RxComponent2 } from "react-icons/rx";
 import CoverFlow from "../components/CoverFlow";
 import SearchAlbum from "../components/SearchAlbum";
+import { albumsState } from "../atoms";
+import { useRecoilState } from "recoil";
+import {DragDropContext,  DragStart,  Droppable, DropResult} from 'react-beautiful-dnd';
+
 export default function Music(){
     const [size, setSize] = useState(5);
     const [topsterMode, setTopsterMode] = useState(true);
@@ -17,6 +21,14 @@ export default function Music(){
     }
     const sizeDown = () => {
         if(size > 2) setSize(prev => prev - 1);
+    }
+    const [albums, setAlbums] = useRecoilState(albumsState);
+    const onDragEnd = (info : DropResult) => {
+        const { destination, source, type } = info;
+        // console.log(info);
+    }
+    const onDragStart = (initial : DragStart) => {
+        console.log(initial);
     }
     return <>
         <div className="min-h-screen px-52">
@@ -32,8 +44,10 @@ export default function Music(){
                 </div>
             </div>
             <div className=" flex flex-row justify-between">
-                {topsterMode? <Topster size={size}/> : <CoverFlow/>}
-                {searchMode? <SearchAlbum/>:<AlbumInfo/>}
+                <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+                    {topsterMode? <Topster albums={albums} size={size}/> : <CoverFlow/>}
+                    {searchMode? <SearchAlbum/>:<AlbumInfo/>}
+                </DragDropContext>
             </div>
         </div>
     </>
