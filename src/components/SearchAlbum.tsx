@@ -43,7 +43,8 @@ export default function SearchAlbum(){
                                 page?.data.map((album : albumType, index : number) => {
                                     if(!album?.image[2]["#text"]) return null
                                     return <CoverArt
-                                    path={album?.image[2]["#text"]}
+                                    index={-1}
+                                    album={album}
                                     key={index}
                                     col={5}/>
                                 })
