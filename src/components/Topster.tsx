@@ -1,8 +1,6 @@
 import { useRecoilState } from "recoil";
 import { albumsState } from "../atoms";
-import { ISize } from "../type";
 import CoverArt from "./CoverArt";
-import EmptyCoverArt from "./EmptyCoverArt";
 
 interface TopsterProps{
     size : number

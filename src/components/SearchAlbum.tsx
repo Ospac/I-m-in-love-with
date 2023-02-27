@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery} from "react-query";
 import { getAlbums } from "../api";
 import { albumType } from "../type";
-import CoverArt from "./CoverArt";
+import CoverResult from "./SearchResultCover";
 import Loading from "./Loading";
 
 export default function SearchAlbum(){
@@ -13,11 +13,7 @@ export default function SearchAlbum(){
     const {data, status, fetchNextPage, isFetchingNextPage} = useInfiniteQuery(
         ['albums', searchKeyword],
         ({pageParam = 1}) => {
-            if(searchKeyword !== ""){
-                return getAlbums(searchKeyword, pageParam);
-                // 키워드가 없을때도 api호출이 되서 예외 처리를 해두니, data 내부가 undefined되도 status가 success인 경우가 생김
-                // 실행상 오류는 이제 없으나, 추후 리팩토링이 필요해보임. 타입문제로 버그 가능성이 생김
-            }
+            if(searchKeyword !== "") return getAlbums(searchKeyword, pageParam);
         },
         {
             getNextPageParam: (lastPage) => {
@@ -38,18 +34,10 @@ export default function SearchAlbum(){
             <div className="flex flex-row flex-wrap justify-start gap-1 bg-slate-300 bg-opacity-10 min-h-0 max-h-[550px] overflow-y-scroll">
                 {
                     data?.pages.map((page, index) => (
-                        <React.Fragment key={index}>
-                            {
-                                page?.data.map((album : albumType, index : number) => {
-                                    if(!album?.image[2]["#text"]) return null
-                                    return <CoverArt
-                                    index={-1}
-                                    album={album}
-                                    key={index}
-                                    col={5}/>
-                                })
-                            }
-                        </React.Fragment>))
+                        page?.data.map((album : albumType, index : number) => {
+                            if(!album?.image[2]["#text"]) return null
+                            return <CoverResult album={album} key={index}/>
+                        })))
                 }
                 {
                 isFetchingNextPage? <div className="relative bottom-9 left-5 z-50"><Loading/></div> : 

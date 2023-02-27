@@ -6,7 +6,9 @@ import { HiPlus, HiMinus, HiMagnifyingGlass } from "react-icons/hi2";
 import { RxComponent2 } from "react-icons/rx";
 import CoverFlow from "../components/CoverFlow";
 import SearchAlbum from "../components/SearchAlbum";
+import useDnd from "../hooks/useDnd";
 export default function Music(){
+    const { onDrop, onDragEnd, onDragOver } = useDnd();
     const [size, setSize] = useState(5);
     const [topsterMode, setTopsterMode] = useState(true);
     const [searchMode, setSearchMode] = useState(false);
@@ -19,7 +21,7 @@ export default function Music(){
         if(size > 2) setSize(prev => prev - 1);
     }
     return <>
-        <div className="min-h-screen px-52">
+        <div className="min-h-screen px-52" onDrop={onDrop} onDragEnd={onDragEnd} onDragOver={onDragOver}>
             <div className="flex flex-row justify-between pb-4 w-[525px]">
                 <input className="btn-primary w-56 focus:outline-none  placeholder:text-zinc-700" placeholder="title"></input>
                 <div className="flex flex-row gap-4">

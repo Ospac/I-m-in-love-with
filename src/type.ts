@@ -21,14 +21,6 @@ export interface albumsType {
     "opensearch:totalResults": string
    
 }
-export interface CoverArtProps{
-    col : number,
-    album: albumType,
-    index: number
-}
-export interface EmptyCoverArtProps{
-    col: number
-}
 export interface grabType {
     pos : number,
     album: {

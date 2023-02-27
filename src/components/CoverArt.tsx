@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { useRecoilState } from "recoil";
-import { albumGrabState, albumsState } from "../atoms";
-import { albumType, CoverArtProps, ISize } from "../type"
-
+import { albumType, ISize } from "../type"
+import useDnd from "../hooks/useDnd"
 export const columnsWidth : ISize = {
     2: "w-[262px]",
     3: "w-[175px]",
@@ -21,60 +18,23 @@ export const columnsHeight : ISize = {
     7: "h-[75px]",
     8: "h-[65px]"
 }
-
+export interface CoverArtProps{
+    col : number,
+    album: albumType,
+    index: number
+}
 export default function CoverArt({col, album, index} : CoverArtProps){
-    const [grab, setGrab] = useRecoilState(albumGrabState);
-    const [list, setList] = useRecoilState(albumsState);
-    const onDragOver = (e : React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-    }
-    const onDragStart = (e : React.DragEvent<HTMLDivElement>) => {
-        if(!(e.target instanceof HTMLDivElement)) return; 
-        if(e.target.dataset?.pos === undefined) return;
-        setGrab({pos: Number(e.target.dataset.pos), album : album});
-        // e.target.classList.add("grabbing");
-        e.dataTransfer.effectAllowed = "move";
-    }
-    
-    const onDragEnd = (e : React.DragEvent<HTMLDivElement>) => {
-        // e.target.classList.remove("grabbing");
-        e.dataTransfer.dropEffect = "move";
-    }
-    
-    const onDrop = (e : React.DragEvent<HTMLDivElement>) => {
-        //event.target이 document, element, window이 될수 있기에 early return
-        if(!(e.target instanceof HTMLDivElement)) return; 
-        const targetPosition   = Number(e.target.dataset.pos);
-        if(grab.pos === -1){
-            const newList = [...list];
-            newList[targetPosition] = {
-                ...(grab.album)
-            };
-            setList(newList);
-        }else{
-            const newList = [...list];
-            newList[grab.pos] = {
-                name: "",
-                artist: "",
-                image: []
-            }
-            newList[targetPosition] = {
-                ...(grab.album)
-            }
-            setList(newList);
-        }
-        
-    }
+    const {onDragOver, onDragStart, onDragEnd, onDrop} = useDnd();
     if(album.image[2] === undefined) return <div 
         onDragOver={onDragOver}
-        onDragStart={onDragStart}
+        onDragStart={(e)=>onDragStart(e, album)}
         onDragEnd={onDragEnd}
         onDrop={onDrop}
         data-pos={index}
         className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center shadow-sm hover:opacity-60 bg-white bg-opacity-10`}/>
     else return <div draggable
         onDragOver={onDragOver}
-        onDragStart={onDragStart}
+        onDragStart={(e)=>onDragStart(e, album)}
         onDragEnd={onDragEnd}
         onDrop={onDrop}
         data-pos={index}
