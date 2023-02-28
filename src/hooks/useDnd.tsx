@@ -1,5 +1,5 @@
-import { SetterOrUpdater, useRecoilState } from "recoil";
-import { albumType, grabType } from "../type";
+import { useRecoilState } from "recoil";
+import { albumType} from "../type";
 import { albumsState, albumGrabState } from "../atoms"
 export default function useDnd(){
     const [list, setList] = useRecoilState(albumsState);

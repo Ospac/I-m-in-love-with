@@ -1,5 +1,7 @@
 import { albumType, ISize } from "../type"
 import useDnd from "../hooks/useDnd"
+import { useRecoilState } from "recoil"
+import { clickedAlbumState } from "../atoms"
 export const columnsWidth : ISize = {
     2: "w-[262px]",
     3: "w-[175px]",
@@ -25,6 +27,10 @@ export interface CoverArtProps{
 }
 export default function CoverArt({col, album, index} : CoverArtProps){
     const {onDragOver, onDragStart, onDragEnd, onDrop} = useDnd();
+    const [clickedAlbum, setClickedAlbum] = useRecoilState(clickedAlbumState);
+    const onClick = () => {
+        setClickedAlbum(album);
+    }
     if(album.image[2] === undefined) return <div 
         onDragOver={onDragOver}
         onDragStart={(e)=>onDragStart(e, album)}
@@ -37,6 +43,7 @@ export default function CoverArt({col, album, index} : CoverArtProps){
         onDragStart={(e)=>onDragStart(e, album)}
         onDragEnd={onDragEnd}
         onDrop={onDrop}
+        onClick={onClick}
         data-pos={index}
         style={{backgroundImage: `url(${album?.image[2]["#text"]}`}} 
         className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center hover:opacity-60`}/>

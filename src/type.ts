@@ -21,6 +21,18 @@ export interface albumsType {
     "opensearch:totalResults": string
    
 }
+export interface albumInfoType{
+    tracks: {
+        track : trackType[]
+    }
+}
+interface trackType {
+    duration : number,
+    name : string,
+    "@attr" : {
+        rank : number,
+    }
+}
 export interface grabType {
     pos : number,
     album: {

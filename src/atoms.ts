@@ -26,3 +26,11 @@ export const albumGrabState = atom<grabType>({
     }
   }
 })
+export const clickedAlbumState = atom<albumType>({
+  key: "clickedAlbum",
+  default: {
+    name: "",
+    artist: "",
+    image: [],
+  }
+})
