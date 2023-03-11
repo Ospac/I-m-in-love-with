@@ -33,6 +33,12 @@ interface trackType {
         rank : number,
     }
 }
+export interface musicSettingType{
+    title: string,
+    size: number,
+    isSearchMode: boolean,
+    isTopsterMode: boolean
+}
 export interface grabType {
     pos : number,
     album: {

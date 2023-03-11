@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { albumType, grabType } from "./type";
+import { albumType, grabType, musicSettingType } from "./type";
 
 
 const { persistAtom } = recoilPersist();
@@ -14,6 +14,16 @@ export const albumsState = atom<albumType[]>({
       
     ]
   }))
+})
+export const musicSettingState = atom<musicSettingType>({
+  key: "musicSetting",
+  effects_UNSTABLE: [persistAtom],
+  default:{
+    title: "",
+    size: 5,
+    isSearchMode: false,
+    isTopsterMode: true,
+  }
 })
 export const albumGrabState = atom<grabType>({
   key: "grabAlbum",

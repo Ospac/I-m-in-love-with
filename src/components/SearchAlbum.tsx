@@ -6,6 +6,8 @@ import { getAlbums } from "../api";
 import { albumType } from "../type";
 import CoverResult from "./SearchResultCover";
 import Loading from "./Loading";
+import styled from "styled-components";
+import { Input } from "../screens/Music";
 
 export default function SearchAlbum(){
     const {ref, inView} = useInView();
@@ -28,10 +30,10 @@ export default function SearchAlbum(){
         if(inView) fetchNextPage();
     }, [inView, fetchNextPage])
     return <>
-        <div className="flex flex-col justify-start items-center relative bottom-16 w-[340px] ">
-            <input onChange={onSearchInputChange} className="btn-primary w-[325px] focus:outline-none my-2 mb-4 placeholder:text-zinc-700" placeholder="search"/>
+        <Container>
+            <Input style={{width: "325px"}} onChange={onSearchInputChange} placeholder="search"/>
             {data?.pages[0] && (status === "success") &&
-            <div className="flex flex-row flex-wrap justify-start gap-1 bg-slate-300 bg-opacity-10 min-h-0 max-h-[550px] overflow-y-scroll">
+            <Scroll>
                 {
                     data?.pages.map((page, index) => (
                         page?.data.map((album : albumType, index : number) => {
@@ -40,10 +42,38 @@ export default function SearchAlbum(){
                         })))
                 }
                 {
-                isFetchingNextPage? <div className="relative bottom-9 left-5 z-50"><Loading/></div> : 
+                isFetchingNextPage? <Loader><Loading/></Loader> : 
                     data? <div ref={ref}></div> : <></>
                 }
-            </div>}
-        </div>
+            </Scroll>
+            }
+        </Container>
     </>
-}   
+}  
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    bottom: 3.2rem;
+    width: 340px;
+`
+const Scroll = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.25rem/* 4px */;
+    background-color: rgb(203 213 225 / var(--bg-opacity));
+    --bg-opacity: 0.1;
+    min-height: 0;
+    max-height: 550px;
+    overflow-y: scroll;
+`
+const Loader = styled.div`
+    position: relative;
+    bottom: 2.25rem/* 36px */;
+    left: 1.25rem/* 20px */;
+    z-index: 50;
+`

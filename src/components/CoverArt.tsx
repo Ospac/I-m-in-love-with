@@ -2,24 +2,7 @@ import { albumType, ISize } from "../type"
 import useDnd from "../hooks/useDnd"
 import { useRecoilState } from "recoil"
 import { clickedAlbumState } from "../atoms"
-export const columnsWidth : ISize = {
-    2: "w-[262px]",
-    3: "w-[175px]",
-    4: "w-[131px]",
-    5: "w-[105px]",
-    6: "w-[87px]",
-    7: "w-[75px]",
-    8: "w-[65px]"
-}
-export const columnsHeight : ISize = {
-    2: "h-[262px]",
-    3: "h-[175px]",
-    4: "h-[131px]",
-    5: "h-[105px]",
-    6: "h-[87px]",
-    7: "h-[75px]",
-    8: "h-[65px]"
-}
+import styled from "styled-components"
 export interface CoverArtProps{
     col : number,
     album: albumType,
@@ -31,20 +14,49 @@ export default function CoverArt({col, album, index} : CoverArtProps){
     const onClick = () => {
         setClickedAlbum(album);
     }
-    if(album.image[2] === undefined) return <div 
-        onDragOver={onDragOver}
-        onDragStart={(e)=>onDragStart(e, album)}
-        onDragEnd={onDragEnd}
-        onDrop={onDrop}
-        data-pos={index}
-        className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center shadow-sm hover:opacity-60 bg-white bg-opacity-10`}/>
-    else return <div draggable
+    if(album.image[2] === undefined) 
+    return <EmptyBox
         onDragOver={onDragOver}
         onDragStart={(e)=>onDragStart(e, album)}
         onDragEnd={onDragEnd}
         onDrop={onDrop}
         onClick={onClick}
         data-pos={index}
-        style={{backgroundImage: `url(${album?.image[2]["#text"]}`}} 
-        className={`${columnsWidth[col]} ${columnsHeight[col]} rounded-lg bg-cover bg-center hover:opacity-60`}/>
+        col ={col}
+        containerSize={600}
+        path={""} 
+    />
+    else return <Box
+        draggable
+        onDragOver={onDragOver}
+        onDragStart={(e)=>onDragStart(e, album)}
+        onDragEnd={onDragEnd}
+        onDrop={onDrop}
+        onClick={onClick}
+        data-pos={index}
+        col ={col}
+        containerSize={600}
+        path={album?.image[2]["#text"]} 
+    />
 }
+interface BoxProps{
+    containerSize : number,
+    col : number,
+    path : string
+}
+
+export const Box = styled.div<BoxProps>`
+    border-radius: 0.5rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.5rem/* 8px */;
+    width: ${(props) => props.containerSize / props.col + "px"};
+    height: ${(props) => props.containerSize / props.col + "px"};
+    background-image: url(${props => props.path});
+    &:hover{
+        opacity: 0.6;
+    }
+`
+const EmptyBox = styled(Box)`
+    background-color: rgb(255,255, 255, 0.1);
+`
