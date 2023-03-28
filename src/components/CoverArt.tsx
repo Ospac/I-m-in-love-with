@@ -1,7 +1,7 @@
 import { albumType, ISize } from "../type"
 import useDnd from "../hooks/useDnd"
 import { useRecoilState } from "recoil"
-import { clickedAlbumState } from "../atoms"
+import { clickedAlbumState, musicSettingState } from "../atoms"
 import styled from "styled-components"
 export interface CoverArtProps{
     col : number,
@@ -11,8 +11,13 @@ export interface CoverArtProps{
 export default function CoverArt({col, album, index} : CoverArtProps){
     const {onDragOver, onDragStart, onDragEnd, onDrop} = useDnd();
     const [clickedAlbum, setClickedAlbum] = useRecoilState(clickedAlbumState);
+    const [musicSetting, setMusicSetting] = useRecoilState(musicSettingState);
     const onClick = () => {
         setClickedAlbum(album);
+        setMusicSetting(prev => ({
+            ...prev,
+            isSearchMode: false
+        }))
     }
     if(album.image[2] === undefined) 
     return <EmptyBox

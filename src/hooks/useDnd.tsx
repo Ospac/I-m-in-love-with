@@ -1,8 +1,9 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { albumType} from "../type";
-import { albumsState, albumGrabState } from "../atoms"
+import { albumGrabState, musicSettingState, topsterListState } from "../atoms"
 export default function useDnd(){
-    const [list, setList] = useRecoilState(albumsState);
+    const musicSetting = useRecoilValue(musicSettingState);
+    const [topsterList, setTopsterList] = useRecoilState(topsterListState);
     const [grab, setGrab] = useRecoilState(albumGrabState);
     const onDragOver = (e : React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -27,34 +28,51 @@ export default function useDnd(){
         const targetPos   = Number(e.target.dataset.pos);
         //grab 요소가 searchResultCover 일때
         if(!Number.isNaN(targetPos) && grab.pos === -1){
-            setList(prev => {
+            setTopsterList(prev => {
+                //3-Level 불변성 유지
                 const _list = [...prev];
-                _list[targetPos] = {
+                prev.forEach((item, i) => { 
+                    _list[i] = {...item}
+                    _list[i].content = [...item.content]
+                })
+                _list[musicSetting.topsterId].content[targetPos] = {
                     ...(grab.album)
                 };
+                
                 return _list;
             })
             return;
         }
           //drop target이 topster가 아닌경우, 삭제
         if(Number.isNaN(targetPos) || targetPos === -1){
-            setList(prev => {
+            setTopsterList(prev => {
+                //3-Level 불변성 유지
                 const _list = [...prev];
-                _list[grab.pos] = {
+                prev.forEach((item, i) => { 
+                    _list[i] = {...item}
+                    _list[i].content = [...item.content]
+                })
+                _list[musicSetting.topsterId].content[grab.pos] = {
                     name: "",
                     artist: "",
-                    image : []
-                } 
-                return _list
+                    image: []
+                };
+                return _list;
             })
             return;
         }
-        if(list[targetPos]){
-            setList(prev => {
+        // target 교환
+        if(topsterList[musicSetting.topsterId].content[targetPos]){
+            setTopsterList(prev => {
+                //3-Level 불변성 유지
                 const _list = [...prev];
-                const tempList = {..._list[grab.pos]};
-                _list[grab.pos] = {..._list[targetPos]};
-                _list[targetPos] = { ...tempList };
+                prev.forEach((item, i) => { 
+                    _list[i] = {...item}
+                    _list[i].content = [...item.content]
+                })
+                const tempList = {..._list[musicSetting.topsterId].content[grab.pos]};
+                _list[musicSetting.topsterId].content[grab.pos] = {..._list[musicSetting.topsterId].content[targetPos]};
+                _list[musicSetting.topsterId].content[targetPos] = { ...tempList };
                 return _list;
             })
         }

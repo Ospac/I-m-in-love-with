@@ -1,17 +1,18 @@
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { albumsState } from "../atoms";
+import { topsterListState } from "../atoms";
 import CoverArt from "./CoverArt";
 
 interface TopsterProps{
-    size : number
+    size : number,
+    index : number
 }
-export default function Topster({size} : TopsterProps){
-    const [list, setList] = useRecoilState(albumsState);
+export default function Topster({size, index} : TopsterProps){
+    const list = useRecoilValue(topsterListState);
     return <>
         <Container>
             {
-                list.map((album, index) => 
+                list[index]?.content?.map((album, index) => 
                     {   if(index >= size * size) return null; //size를 변경했을때, list를 보존하면서 표시하는 album 갯수만 변경
                         return <CoverArt album={album} key={index} col={size} index={index}/>
                     }

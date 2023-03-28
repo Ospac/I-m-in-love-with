@@ -333,10 +333,24 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 const Container = styled.div`
-  background-image: linear-gradient(to right, var(--gradient-stops));
+  /* background-image: linear-gradient(to right, var(--gradient-stops));
   --gradient-from: #ef4444;
   --gradient-to: rgb(239 68 68 / 0);
   --gradient-stops: var(--gradient-from), var(--gradient-to);
-  --gradient-to: #22c55e;
+  --gradient-to: #22c55e; */
+    background: linear-gradient(-45deg, #23a6d5,#ef4444, #22c55e, #ef4444);
+	background-size: 400% 400%;
+	animation: gradient 20s ease infinite;
+    @keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
 `
 export default Root;

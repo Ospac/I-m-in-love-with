@@ -1,28 +1,37 @@
-import { useEffect, useState } from "react"
 import AlbumInfo from "../components/AlbumInfo";
 import Topster from "../components/Topster";
 import { BsMusicPlayerFill} from "react-icons/bs";
 import { HiPlus, HiMinus, HiMagnifyingGlass } from "react-icons/hi2";
+import {VscLibrary } from "react-icons/vsc";
 import { RxComponent2 } from "react-icons/rx";
 import CoverFlow from "../components/CoverFlow";
 import SearchAlbum from "../components/SearchAlbum";
 import useDnd from "../hooks/useDnd";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import { musicSettingState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { musicSettingState, topsterListState } from "../atoms";
+import TopsterList from "../components/TopsterLIst";
 export default function Music(){
     const { onDrop, onDragEnd, onDragOver } = useDnd();
     const [musicSetting, setMusicSetting] = useRecoilState(musicSettingState);
+    const topsterList = useRecoilValue(topsterListState);
     const setTitle = (e : React.ChangeEvent<HTMLInputElement>) => {
         setMusicSetting(prev => ({
             ...prev,
-            title : e.target.value
+        }))
+    }
+    const toggleListMode = () => {
+        setMusicSetting(prev => ({
+            ...prev,
+            isTopsterMode : !prev.isTopsterMode,
+            isListMode: !prev.isListMode,
         }))
     }
     const toggleTopsterMode = () => {
         setMusicSetting(prev => ({
             ...prev,
-            isTopsterMode : !prev.isTopsterMode
+            isTopsterMode : !prev.isTopsterMode,
+            isListMode : !prev.isListMode,
         }))
     }
     const toggleSearchMode = () => {
@@ -50,18 +59,22 @@ export default function Music(){
     return <>
         <Container onDrop={onDrop} onDragEnd={onDragEnd} onDragOver={onDragOver}>
             <Content>
-                <Input placeholder="title" onChange={setTitle} value={musicSetting.title}/>
+                <Input placeholder="title" onChange={setTitle} value={topsterList[musicSetting.topsterId].title}/>
                 <Buttons>
-                    {musicSetting.isTopsterMode? 
+                    {/* {musicSetting.isTopsterMode? 
                     <Button onClick={toggleTopsterMode}><BsMusicPlayerFill/></Button>
-                    :<Button onClick={toggleTopsterMode}><RxComponent2/></Button>}
+                    :<Button onClick={toggleTopsterMode}><RxComponent2/></Button>} */}
+                    <Button onClick={toggleListMode}><VscLibrary/></Button>
+                    <Button><RxComponent2/></Button>
                     {musicSetting.isTopsterMode && <Button onClick={sizeUp}><HiPlus/></Button>}
                     {musicSetting.isTopsterMode && <Button onClick={sizeDown}><HiMinus/></Button>}
                     <Button onClick={toggleSearchMode}><HiMagnifyingGlass/></Button>
                 </Buttons>
             </Content>
             <Info>
-                {musicSetting.isTopsterMode? <Topster size={musicSetting.size}/> : <CoverFlow/>}
+                {musicSetting.isTopsterMode && <Topster size={musicSetting.size} index={musicSetting.topsterId}/>}
+                {musicSetting.isCoverFlowMode && <CoverFlow/>}
+                {musicSetting.isListMode && <TopsterList/>}
                 {musicSetting.isSearchMode? <SearchAlbum/>:<AlbumInfo/>}
             </Info>
         </Container>

@@ -1,34 +1,34 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { albumsState } from "../atoms";
 
 export default function CoverFlow(){
-    const [list, setList] = useRecoilState(albumsState);
-    const [index, setIndex] = useState(0);
-    const onLeft = () => {
-        if(0 < index) setIndex(prev => prev - 1);
-        setTranslate(`translateX( -"+ ( 70 * ( ${index} - i  ) ) +"% ) rotateY( "+ ROTATION +"deg )"`)
-    }
-    const onRight = () => {
-        if(list.length  - 1 > index) setIndex(prev => prev + 1);
-        setTranslate(`translateX( -"+ ( 70 * ( ${index} - i  ) ) +"% ) rotateY( "+ ROTATION +"deg )"`)
+    // const [list, setList] = useRecoilState(albumsState);
+    // const [index, setIndex] = useState(0);
+    // const onLeft = () => {
+    //     if(0 < index) setIndex(prev => prev - 1);
+    //     setTranslate(`translateX( -"+ ( 70 * ( ${index} - i  ) ) +"% ) rotateY( "+ ROTATION +"deg )"`)
+    // }
+    // const onRight = () => {
+    //     if(list.length  - 1 > index) setIndex(prev => prev + 1);
+    //     setTranslate(`translateX( -"+ ( 70 * ( ${index} - i  ) ) +"% ) rotateY( "+ ROTATION +"deg )"`)
 
-    }
-    const [translate, setTranslate] = useState("");
+    // }
+    // const [translate, setTranslate] = useState("");
 
-    return <Container>
-            {
-                list.map((album, key) => 
-                    {  
-                        if(album.name === "") return null;
-                        return <Cover key={key} path={album?.image[2]["#text"]} trans={translate}/>
-                    }
-                )
-            }
-        <button onClick={onLeft}>left</button>
-        <button onClick={onRight}>right</button>
-    </Container>
+    // return <Container>
+    //         {
+    //             list.map((album, key) => 
+    //                 {  
+    //                     if(album.name === "") return null;
+    //                     return <Cover key={key} path={album?.image[2]["#text"]} trans={translate}/>
+    //                 }
+    //             )
+    //         }
+    //     <button onClick={onLeft}>left</button>
+    //     <button onClick={onRight}>right</button>
+    // </Container>
+    return <></>
 }
 
 const Container = styled.div`

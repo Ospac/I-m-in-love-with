@@ -1,28 +1,35 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { albumType, grabType, musicSettingType } from "./type";
-
+import { albumType, grabType, musicSettingType, topsterType } from "./type";
 
 const { persistAtom } = recoilPersist();
-export const albumsState = atom<albumType[]>({
-  key : "albums",
+export const topsterListState = atom<topsterType[]>({
+  key: "topsterList",
   effects_UNSTABLE: [persistAtom],
-  default: Array(64).fill(0).map(() => ({
-    name: "",
-    artist: "",
-    image: [
-      
-    ]
-  }))
+  default: [
+    {
+      title: "",
+      topsterId: 0,
+      content: Array(64).fill(0).map(() => ({
+        name: "",
+        artist: "",
+        image: [
+          
+        ]
+      })),
+    }
+  ]
 })
 export const musicSettingState = atom<musicSettingType>({
   key: "musicSetting",
   effects_UNSTABLE: [persistAtom],
   default:{
-    title: "",
     size: 5,
+    topsterId: 0,
     isSearchMode: false,
     isTopsterMode: true,
+    isCoverFlowMode: false,
+    isListMode: false,
   }
 })
 export const albumGrabState = atom<grabType>({

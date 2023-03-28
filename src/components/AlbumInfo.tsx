@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getAlbumInfo } from "../api";
 import { clickedAlbumState } from "../atoms";
 import { albumInfoType } from "../type";
 
 export default function AlbumInfo(){
-    const [clickedAlbum, setClickedAlbum] = useRecoilState(clickedAlbumState);
+    const clickedAlbum = useRecoilValue(clickedAlbumState);
     const {artist, name, image} = clickedAlbum;
     const {data, status} = useQuery<albumInfoType>(["albumInfo", clickedAlbum.name, clickedAlbum.artist],
         () => getAlbumInfo(name, artist),

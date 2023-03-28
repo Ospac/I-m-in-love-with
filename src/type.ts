@@ -11,15 +11,21 @@ export interface albumType {
         }
     }
 }
-export interface albumsType {
-    albummatches: {
-        album : albumType[]
-    }
-    "opensearch:Query": Object,
-    "opensearch:itemsPerPage": string
-    "opensearch:startIndex": string
-    "opensearch:totalResults": string
+// export interface albumsType {
+//     albummatches: {
+//         album : albumType[]
+//     }
+//     "opensearch:Query": Object,
+//     "opensearch:itemsPerPage": string
+//     "opensearch:startIndex": string
+//     "opensearch:totalResults": string
    
+// }
+
+export interface topsterType{
+    title : string,
+    topsterId : number,
+    content: albumType[],
 }
 export interface albumInfoType{
     tracks: {
@@ -34,10 +40,12 @@ interface trackType {
     }
 }
 export interface musicSettingType{
-    title: string,
     size: number,
+    topsterId: number,
     isSearchMode: boolean,
-    isTopsterMode: boolean
+    isTopsterMode: boolean,
+    isCoverFlowMode: boolean,
+    isListMode : boolean,
 }
 export interface grabType {
     pos : number,

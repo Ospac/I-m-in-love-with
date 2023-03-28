@@ -64,6 +64,7 @@ const Scroll = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+    margin-top: 15px;
     gap: 0.25rem/* 4px */;
     background-color: rgb(203 213 225 / var(--bg-opacity));
     --bg-opacity: 0.1;
