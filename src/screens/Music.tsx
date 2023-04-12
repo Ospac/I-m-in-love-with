@@ -1,10 +1,8 @@
 import AlbumInfo from "../components/AlbumInfo";
 import Topster from "../components/Topster";
-import { BsMusicPlayerFill} from "react-icons/bs";
 import { HiPlus, HiMinus, HiMagnifyingGlass } from "react-icons/hi2";
 import {VscLibrary } from "react-icons/vsc";
 import { RxComponent2 } from "react-icons/rx";
-import CoverFlow from "../components/CoverFlow";
 import SearchAlbum from "../components/SearchAlbum";
 import useDnd from "../hooks/useDnd";
 import styled from "styled-components";
@@ -14,11 +12,17 @@ import TopsterList from "../components/TopsterLIst";
 export default function Music(){
     const { onDrop, onDragEnd, onDragOver } = useDnd();
     const [musicSetting, setMusicSetting] = useRecoilState(musicSettingState);
-    const topsterList = useRecoilValue(topsterListState);
+    const [topsterList, setTopsterList] = useRecoilState(topsterListState);
     const setTitle = (e : React.ChangeEvent<HTMLInputElement>) => {
-        setMusicSetting(prev => ({
-            ...prev,
-        }))
+        setTopsterList(prev => {
+            const _list = [...prev];
+            prev.forEach((item, i) => { 
+                _list[i] = {...item}
+                _list[i].content = [...item.content]
+            })
+            _list[musicSetting.topsterId].title = e.currentTarget.value;
+            return _list;
+        })
     }
     const toggleListMode = () => {
         setMusicSetting(prev => ({
@@ -59,11 +63,13 @@ export default function Music(){
     return <>
         <Container onDrop={onDrop} onDragEnd={onDragEnd} onDragOver={onDragOver}>
             <Content>
-                <Input placeholder="title" onChange={setTitle} value={topsterList[musicSetting.topsterId].title}/>
+                {   
+                    musicSetting.isTopsterMode? 
+                    <Input placeholder="title" onChange={setTitle} value={topsterList[musicSetting.topsterId].title}/>
+                    :
+                    <div>Your List</div>
+                }
                 <Buttons>
-                    {/* {musicSetting.isTopsterMode? 
-                    <Button onClick={toggleTopsterMode}><BsMusicPlayerFill/></Button>
-                    :<Button onClick={toggleTopsterMode}><RxComponent2/></Button>} */}
                     <Button onClick={toggleListMode}><VscLibrary/></Button>
                     <Button><RxComponent2/></Button>
                     {musicSetting.isTopsterMode && <Button onClick={sizeUp}><HiPlus/></Button>}
@@ -73,7 +79,6 @@ export default function Music(){
             </Content>
             <Info>
                 {musicSetting.isTopsterMode && <Topster size={musicSetting.size} index={musicSetting.topsterId}/>}
-                {musicSetting.isCoverFlowMode && <CoverFlow/>}
                 {musicSetting.isListMode && <TopsterList/>}
                 {musicSetting.isSearchMode? <SearchAlbum/>:<AlbumInfo/>}
             </Info>

@@ -5,7 +5,7 @@ import CoverArt from "./CoverArt";
 
 interface TopsterProps{
     size : number,
-    index : number
+    index : number,
 }
 export default function Topster({size, index} : TopsterProps){
     const list = useRecoilValue(topsterListState);

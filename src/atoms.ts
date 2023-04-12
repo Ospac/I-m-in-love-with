@@ -28,7 +28,6 @@ export const musicSettingState = atom<musicSettingType>({
     topsterId: 0,
     isSearchMode: false,
     isTopsterMode: true,
-    isCoverFlowMode: false,
     isListMode: false,
   }
 })

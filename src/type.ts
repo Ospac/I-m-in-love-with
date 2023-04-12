@@ -44,7 +44,6 @@ export interface musicSettingType{
     topsterId: number,
     isSearchMode: boolean,
     isTopsterMode: boolean,
-    isCoverFlowMode: boolean,
     isListMode : boolean,
 }
 export interface grabType {

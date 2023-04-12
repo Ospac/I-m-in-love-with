@@ -6,7 +6,7 @@ import styled from "styled-components"
 export interface CoverArtProps{
     col : number,
     album: albumType,
-    index: number
+    index: number,
 }
 export default function CoverArt({col, album, index} : CoverArtProps){
     const {onDragOver, onDragStart, onDragEnd, onDrop} = useDnd();
